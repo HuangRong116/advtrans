@@ -25,15 +25,15 @@ class CNN(torch.nn.Module):
             torch.nn.BatchNorm2d(2*self.out_c),
             torch.nn.ReLU(),
             )
-                   
-        self.linear = torch.nn.Linear(30*3*3, self.n_classes)
+    
         self.Dropout = torch.nn.Dropout(cnn_drop_raito)
 
     def forward(self,x):
         x = self.conv1(x)
         x = self.Dropout(x)
         x = self.conv2(x)
-        x = x.view(-1,30*3*3)
-        x = self.linear(x)
+        x = x.view(1,-1)
+        len = x.shape
+        x = torch.nn.Linear(len[1],self.n_classes)(x)
 
         return x
